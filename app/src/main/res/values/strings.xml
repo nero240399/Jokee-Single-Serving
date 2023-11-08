@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Jokee Single Serving</string>
+    <string name="by_user">Handcrafted by</string>
+    <string name="introduction_title">A joke a day keeps the doctor away</string>
+    <string name="introduction_description">If you joke wrong way, your teeth have to pay.(Serious)</string>
+    <string name="out_of_joke">That\'s all the jokes for today! Come back another day!</string>
+    <string name="like_description">This is funny!</string>
+    <string name="dislike_description">This is not funny</string>
+    <string name="disclaimer">This appis created as part of Hisolutions program. The materials con-
+tained on this website are provided for general information only and
+do not constitute any form of advice. HLS assumes no responsibility
+for the accuracy of any particular statement and accepts no liability
+for any loss or damage which may arise from reliance on the infor-
+mation contained on this site.</string>
+    <string name="copyright">Copyright 2021 HLS</string>
 </resources>
