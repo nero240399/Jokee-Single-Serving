@@ -3,7 +3,6 @@ package com.example.jokeesingleserving.features.joke
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -92,7 +91,10 @@ fun JokeScreen(
             modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.height((if (isCompact) 32 else 4).dp))
-        LikeButtons(feedbackJoke = feedbackJoke)
+        LikeButtons(
+            isCompact = isCompact,
+            feedbackJoke = feedbackJoke
+        )
         Spacer(modifier = Modifier.height((if (isCompact) 32 else 4).dp))
         DisclaimerContent(isCompact)
     }
@@ -160,22 +162,27 @@ fun JokeContent(content: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun LikeButtons(
+    isCompact: Boolean,
     feedbackJoke: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = modifier.fillMaxWidth()
-    ) {
-        JokeButton(textId = R.string.dislike_description) {
+    Row(modifier = modifier) {
+        Spacer(modifier = Modifier.weight(if (isCompact) 0.1f else 1f))
+        JokeButton(
+            textId = R.string.dislike_description,
+            modifier = Modifier.weight(1f)
+        ) {
             feedbackJoke(false)
         }
+        Spacer(modifier = Modifier.weight(if (isCompact) 0.1f else 1f))
         JokeButton(
             textId = R.string.like_description,
-            containerColor = MaterialTheme.colorScheme.secondary
+            containerColor = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.weight(1f)
         ) {
             feedbackJoke(true)
         }
+        Spacer(modifier = Modifier.weight(if (isCompact) 0.1f else 1f))
     }
 }
 
