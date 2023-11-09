@@ -26,6 +26,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,10 +50,14 @@ import com.example.jokeesingleserving.features.joke.components.JokeButton
 import com.example.jokeesingleserving.features.joke.components.UserCard
 
 @Composable
-fun JokeRoute(viewModel: JokeViewModel = hiltViewModel()) {
+fun JokeRoute(
+    windowSizeClass: WindowSizeClass,
+    viewModel: JokeViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold { paddingValues ->
         JokeScreen(
+            windowSizeClass = windowSizeClass,
             uiState = uiState,
             feedbackJoke = viewModel::feedbackJoke,
             modifier = Modifier.padding(paddingValues)
@@ -58,27 +65,36 @@ fun JokeRoute(viewModel: JokeViewModel = hiltViewModel()) {
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun JokeScreen(
+    windowSizeClass: WindowSizeClass,
     uiState: Joke?,
     feedbackJoke: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isCompact by remember {
+        mutableStateOf(
+            windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+        )
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        TopBar(modifier = Modifier.padding(all = 16.dp))
-        IntroductionBanner()
-        Spacer(modifier = Modifier.height(64.dp))
+        if (isCompact) {
+            TopBar(modifier = Modifier.padding(all = 16.dp))
+        }
+        IntroductionBanner(isCompact)
+        Spacer(modifier = Modifier.height((if (isCompact) 64 else 16).dp))
         JokeContent(
             content = uiState?.content ?: stringResource(id = R.string.out_of_joke),
             modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height((if (isCompact) 32 else 4).dp))
         LikeButtons(feedbackJoke = feedbackJoke)
-        Spacer(modifier = Modifier.height(16.dp))
-        DisclaimerContent()
+        Spacer(modifier = Modifier.height((if (isCompact) 32 else 4).dp))
+        DisclaimerContent(isCompact)
     }
 }
 
@@ -100,20 +116,23 @@ fun TopBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun IntroductionBanner(modifier: Modifier = Modifier) {
+fun IntroductionBanner(isCompact: Boolean, modifier: Modifier = Modifier) {
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier.fillMaxWidth()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(vertical = 32.dp, horizontal = 16.dp)
+            modifier = modifier.padding(
+                vertical = (if (isCompact) 32 else 8).dp,
+                horizontal = 16.dp
+            )
         ) {
             Text(
                 text = stringResource(id = R.string.introduction_title),
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height((if (isCompact) 16 else 0).dp))
             Text(
                 text = stringResource(id = R.string.introduction_description),
                 textAlign = TextAlign.Center,
@@ -126,14 +145,17 @@ fun IntroductionBanner(modifier: Modifier = Modifier) {
 @Composable
 fun JokeContent(content: String, modifier: Modifier = Modifier) {
     val state = rememberScrollState()
-    Text(
-        text = content,
-        style = MaterialTheme.typography.bodyLarge,
-        overflow = TextOverflow.Ellipsis,
+    Column(
         modifier = modifier
             .padding(horizontal = 32.dp)
-            .verticalScroll(state),
-    )
+            .verticalScroll(state)
+    ) {
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodyLarge,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
 }
 
 @Composable
@@ -158,8 +180,9 @@ fun LikeButtons(
 }
 
 @Composable
-fun DisclaimerContent(modifier: Modifier = Modifier) {
-    var expanded by remember { mutableStateOf(false) }
+fun DisclaimerContent(isCompact: Boolean, modifier: Modifier = Modifier) {
+    var expanded by remember { mutableStateOf(isCompact) }
+    val state = rememberScrollState()
     Box(contentAlignment = Alignment.Center) {
         Divider()
         IconButton(onClick = { expanded = !expanded }) {
@@ -186,14 +209,16 @@ fun DisclaimerContent(modifier: Modifier = Modifier) {
             Text(
                 text = stringResource(id = R.string.disclaimer),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.verticalScroll(state)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height((if (isCompact) 8 else 0).dp))
         }
         Text(
             text = stringResource(id = R.string.copyright),
             style = MaterialTheme.typography.titleSmall
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height((if (isCompact) 8 else 0).dp))
     }
 }
