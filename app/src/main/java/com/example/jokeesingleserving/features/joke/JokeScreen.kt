@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -53,11 +54,8 @@ fun JokeScreen(
     ) {
         TopBar(modifier = Modifier.padding(all = 16.dp))
         IntroductionBanner()
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = uiState?.content ?: stringResource(id = R.string.out_of_joke),
-            modifier = Modifier.padding(horizontal = 32.dp)
-        )
+        Spacer(modifier = Modifier.height(64.dp))
+        JokeContent(uiState?.content ?: stringResource(id = R.string.out_of_joke))
         Spacer(modifier = Modifier.weight(1f))
         LikeButtons(feedbackJoke = feedbackJoke)
         Spacer(modifier = Modifier.height(16.dp))
@@ -70,12 +68,13 @@ fun JokeScreen(
 fun TopBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+        modifier = modifier.fillMaxHeight(0.05f)
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_zens),
             contentDescription = null,
-            modifier = Modifier.width(120.dp)
+            contentScale = ContentScale.FillHeight,
+            modifier = Modifier.fillMaxHeight()
         )
         Spacer(modifier = Modifier.weight(1f))
         UserCard(name = "Nguyen Duc Hung")
@@ -86,20 +85,33 @@ fun TopBar(modifier: Modifier = Modifier) {
 fun IntroductionBanner(modifier: Modifier = Modifier) {
     Surface(
         color = MaterialTheme.colorScheme.primary,
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(vertical = 32.dp, horizontal = 16.dp)
         ) {
-            Text(text = stringResource(id = R.string.introduction_title))
+            Text(
+                text = stringResource(id = R.string.introduction_title),
+                style = MaterialTheme.typography.titleMedium
+            )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(id = R.string.introduction_description),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }
+}
+
+@Composable
+fun JokeContent(content: String) {
+    Text(
+        text = content,
+        modifier = Modifier.padding(horizontal = 32.dp),
+        style = MaterialTheme.typography.bodyLarge
+    )
 }
 
 @Composable
@@ -131,8 +143,13 @@ fun DisclaimerText(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(id = R.string.disclaimer),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodySmall
         )
-        Text(text = stringResource(id = R.string.copyright))
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(id = R.string.copyright),
+            style = MaterialTheme.typography.titleSmall
+        )
     }
 }
