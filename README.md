@@ -43,10 +43,11 @@ User do not need to register or login to view the joke or vote for the joke.
 
 ## Preview
 
-|                                                  |                                                  |                                                  |
-|--------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
-| <img src="./appview/screen_1.png" height="480"/> | <img src="./appview/screen_2.png" height="480"/> | <img src="./appview/screen_3.png" height="480"/> |
-| <img src="./appview/screen_4.png" height="480"/> | <img src="./appview/screen_5.png" height="480"/> |
+|                                    |                                    |                                    |
+|------------------------------------|------------------------------------|------------------------------------|
+| ![Screen1](./appview/screen_1.png) | ![Screen3](./appview/screen_3.png) | ![Screen4](./appview/screen_4.png) |
+| ![Screen2](./appview/screen_2.png) |
+| ![Screen5](./appview/screen_5.png) | 
 
 
 
