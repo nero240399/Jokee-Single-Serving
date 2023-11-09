@@ -35,7 +35,7 @@ class DefaultJokeRepository @Inject constructor(
     // Simulate loading joke is long-running task requiring preloading
     override suspend fun preloadJoke() {
         // For simulating
-        delay(3.seconds)
+        delay(1.seconds)
         if (preferencesDataSource.getIsFirstRun()) {
             insertJokes()
             preferencesDataSource.setIsFirstRunIntoFalse()

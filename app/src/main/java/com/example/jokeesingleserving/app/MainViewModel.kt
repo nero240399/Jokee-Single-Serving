@@ -1,34 +1,30 @@
-package com.example.jokeesingleserving.features.joke
+package com.example.jokeesingleserving.app
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jokeesingleserving.app.MainActivityUiState.Loading
+import com.example.jokeesingleserving.app.MainActivityUiState.Success
 import com.example.jokeesingleserving.core.data.repository.JokeRepository
-import com.example.jokeesingleserving.core.model.Joke
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class MainActivityUiState { Loading, Success }
+
 @HiltViewModel
-class JokeViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val jokeRepository: JokeRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<Joke?>(null)
+    private val _uiState = MutableStateFlow(Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
-        jokeRepository.currentJoke
-            .onEach { _uiState.value = it }
-            .launchIn(viewModelScope)
-    }
-
-    fun feedbackJoke(isLiked: Boolean) {
         viewModelScope.launch {
-            jokeRepository.feedbackJoke(isLiked)
+            jokeRepository.preloadJoke()
+            _uiState.value = Success
         }
     }
 }
