@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,14 +18,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.jokeesingleserving.R
 import com.example.jokeesingleserving.core.model.Joke
+import com.example.jokeesingleserving.features.joke.components.JokeButton
 import com.example.jokeesingleserving.features.joke.components.UserCard
 
 @Composable
@@ -52,14 +53,14 @@ fun JokeScreen(
     ) {
         TopBar(modifier = Modifier.padding(all = 16.dp))
         IntroductionBanner()
-        Spacer(modifier = Modifier.height(64.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = uiState?.content ?: stringResource(id = R.string.out_of_joke),
             modifier = Modifier.padding(horizontal = 32.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
         LikeButtons(feedbackJoke = feedbackJoke)
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Divider()
         DisclaimerText(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
     }
@@ -84,7 +85,7 @@ fun TopBar(modifier: Modifier = Modifier) {
 @Composable
 fun IntroductionBanner(modifier: Modifier = Modifier) {
     Surface(
-        color = Color.Green,
+        color = MaterialTheme.colorScheme.primary,
         modifier = modifier
     ) {
         Column(
@@ -93,7 +94,10 @@ fun IntroductionBanner(modifier: Modifier = Modifier) {
         ) {
             Text(text = stringResource(id = R.string.introduction_title))
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = stringResource(id = R.string.introduction_description))
+            Text(
+                text = stringResource(id = R.string.introduction_description),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -107,11 +111,14 @@ fun LikeButtons(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier.fillMaxWidth()
     ) {
-        Button(onClick = { feedbackJoke(false) }) {
-            Text(text = stringResource(id = R.string.dislike_description))
+        JokeButton(textId = R.string.dislike_description) {
+            feedbackJoke(false)
         }
-        Button(onClick = { feedbackJoke(true) }) {
-            Text(text = stringResource(id = R.string.like_description))
+        JokeButton(
+            textId = R.string.like_description,
+            containerColor = MaterialTheme.colorScheme.secondary
+        ) {
+            feedbackJoke(true)
         }
     }
 }
@@ -122,7 +129,10 @@ fun DisclaimerText(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        Text(text = stringResource(id = R.string.disclaimer))
+        Text(
+            text = stringResource(id = R.string.disclaimer),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
         Text(text = stringResource(id = R.string.copyright))
     }
 }
