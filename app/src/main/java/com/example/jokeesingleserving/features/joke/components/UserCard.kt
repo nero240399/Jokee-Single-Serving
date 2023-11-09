@@ -32,11 +32,11 @@ fun UserCard(
             Text(
                 text = stringResource(id = R.string.by_user),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = name,
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelMedium
             )
         }
         Spacer(modifier = Modifier.width(8.dp))

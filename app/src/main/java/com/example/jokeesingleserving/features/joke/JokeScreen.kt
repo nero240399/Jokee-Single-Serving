@@ -81,33 +81,36 @@ fun JokeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        if (isCompact) {
-            TopBar(modifier = Modifier.padding(all = 16.dp))
-        }
+        TopBar(
+            isCompact = isCompact,
+            modifier = Modifier
+                .padding(bottom = (if (isCompact) 16 else 4).dp)
+                .padding(horizontal = (if (isCompact) 16 else 32).dp)
+        )
         IntroductionBanner(isCompact)
-        Spacer(modifier = Modifier.height((if (isCompact) 64 else 16).dp))
+        Spacer(modifier = Modifier.height((if (isCompact) 64 else 8).dp))
         JokeContent(
             content = uiState?.content ?: stringResource(id = R.string.out_of_joke),
             modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier.height((if (isCompact) 32 else 4).dp))
+        Spacer(modifier = Modifier.height((if (isCompact) 32 else 8).dp))
         LikeButtons(
             isCompact = isCompact,
             feedbackJoke = feedbackJoke
         )
-        Spacer(modifier = Modifier.height((if (isCompact) 32 else 4).dp))
+        Spacer(modifier = Modifier.height((if (isCompact) 32 else 0).dp))
         DisclaimerContent(isCompact)
     }
 }
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar(isCompact: Boolean, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxHeight(0.05f)
+        modifier = modifier.fillMaxHeight(if (isCompact) 0.05f else 0.1f)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo_zens),
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.fillMaxHeight()
@@ -217,15 +220,14 @@ fun DisclaimerContent(isCompact: Boolean, modifier: Modifier = Modifier) {
                 text = stringResource(id = R.string.disclaimer),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.verticalScroll(state)
             )
-            Spacer(modifier = Modifier.height((if (isCompact) 8 else 0).dp))
         }
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(id = R.string.copyright),
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.labelMedium
         )
-        Spacer(modifier = Modifier.height((if (isCompact) 8 else 0).dp))
     }
 }
