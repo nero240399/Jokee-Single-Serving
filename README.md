@@ -42,7 +42,7 @@ User do not need to register or login to view the joke or vote for the joke.
 - Simulate long-running preload before enter joke screen
 
 ## Preview
-
+https://github.com/nero240399/Jokee-Single-Serving/assets/50225603/d4c39368-6c73-4cfc-a91e-dc1b51d88614
 |                                    |                                    |                                    |
 |------------------------------------|------------------------------------|------------------------------------|
 | ![Screen1](./appview/screen_1.png) | ![Screen3](./appview/screen_3.png) | ![Screen4](./appview/screen_4.png) |
