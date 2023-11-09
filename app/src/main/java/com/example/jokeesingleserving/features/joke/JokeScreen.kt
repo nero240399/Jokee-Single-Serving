@@ -87,7 +87,7 @@ fun JokeScreen(
             isCompact = isCompact,
             feedbackJoke = feedbackJoke
         )
-        Spacer(modifier = Modifier.height((if (isCompact) 44 else 0).dp))
+        Spacer(modifier = Modifier.height((if (isCompact) 44 else 8).dp))
         DisclaimerContent()
     }
 }
@@ -119,7 +119,7 @@ fun IntroductionBanner(isCompact: Boolean, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier.padding(horizontal = 16.dp)
         ) {
-            Spacer(modifier = Modifier.height(52.dp))
+            Spacer(modifier = Modifier.height((if (isCompact) 52 else 8).dp))
             Text(
                 text = stringResource(id = R.string.introduction_title),
                 style = MaterialTheme.typography.titleMedium
@@ -130,7 +130,7 @@ fun IntroductionBanner(isCompact: Boolean, modifier: Modifier = Modifier) {
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall
             )
-            Spacer(modifier = Modifier.height((if (isCompact) 36 else 0).dp))
+            Spacer(modifier = Modifier.height((if (isCompact) 36 else 8).dp))
         }
     }
 }
